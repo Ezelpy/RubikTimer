@@ -4,11 +4,29 @@
 
 <html lang="en">
     <head>
-        <title></title>
+        <title>Timer</title>
         <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="{% static 'encyclopedia/styles.css' %}" rel="stylesheet"> -->
     </head>
     <body>
-        This is RubikTimer 
+        <h1>Rubik Timer</h1>
+        <div class="container">
+            <div id="display">
+                00:00:00
+            </div>
+            <div id="controls">
+                <button id="cmdStart" onclick="start()" onkeydown="start()">Start</button>
+                <button id="cmdStop" onclick="stop()">Stop</button>
+                <button id="cmdReset" onclick="reset()">Reset</button>
+            </div>
+        </div>  
+
+
+        
+        <div>
+
+        </div>
+        <script src="{% static 'rtimer/js/index.js' %}"></script>
     </body>
 </html>
+
