@@ -33,18 +33,22 @@ function reset() {
 }
 
 function update() {
-    const currentTime = Date.now();
-    elapsedTime = currentTime - startTime;
+  elapsedTime = Date.now() - startTime;
 
-    let minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
-    let seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
-    let milliseconds = Math.floor((elapsedTime % 1000) / 10);
+  const minutes = String(Math.floor(elapsedTime / 60000))
+    .padStart(2, "0");
 
-    if (minutes < 10) minutes = "0" + minutes;
-    if (seconds < 10) seconds = "0" + seconds;
+  const seconds = String(
+    Math.floor((elapsedTime % 60000) / 1000)
+  ).padStart(2, "0");
 
-    display.textContent = `${minutes}:${seconds}:${milliseconds}`;
+  const centiseconds = String(
+    Math.floor((elapsedTime % 1000) / 10)
+  ).padStart(2, "0");
+
+  display.textContent = `${minutes}:${seconds}:${centiseconds}`;
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
   let isRunning = false;
