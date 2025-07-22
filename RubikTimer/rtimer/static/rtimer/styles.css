@@ -3,6 +3,7 @@ body {
     padding: 0;
     box-sizing: border-box;
     overflow: hidden;
+    background-color: lightblue;
 }
 
 .heading {
@@ -27,6 +28,8 @@ body {
    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; 
    text-align: center;
    color: #279bc2;
+   font-size: 100px;
+   
 }
 
 .container {
@@ -37,14 +40,13 @@ body {
     background-color: white;
     width: 50%;
     height: 350px;
-    border-radius: 25px;
+    border-radius: 0px;
     border-color: #279bc2;
-    border-style: solid;
+    border-style: none;
     margin: 0 auto;
-    gap: 2rem;        
-}
-
-.controls {
+    gap: 2rem;}
+ 
+.controls {  
     display: flex;
     justify-content: center;
     align-items: center;

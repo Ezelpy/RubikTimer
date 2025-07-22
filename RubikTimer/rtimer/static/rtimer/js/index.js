@@ -14,6 +14,7 @@ function start() {
     reset();
   } 
   if (!isRunning) {
+        body.style.backgroundColor = "lightgreen";
         startTime = Date.now() - elapsedTime;
         // We call the update function every ten miliseconds
         timer = setInterval(update, 10);
@@ -23,6 +24,8 @@ function start() {
 
 function stop() {
     if (isRunning) {
+        display.style.color = "#279bc2";
+        body.style.backgroundColor = "lightblue";  
         clearInterval(timer);
         timer = null;
         isRunning = false;
@@ -30,10 +33,15 @@ function stop() {
 }
 
 function reset() {
+    if (isRunning) {
+      body.style.backgroundColor = "lightblue";  
+    }
     clearInterval(timer);
     timer = null;
     isRunning = false;
+    startTime = 0;
     elapsedTime = 0;
+    controlPress = 0;
     display.textContent = "00:00:00";
     startTime = Date.now();
 }
@@ -54,36 +62,30 @@ function update() {
 }
 
 
+
 document.addEventListener('keydown', e => {
     if (e.code === 'Space' || e.key === ' ') {
       if (!isRunning) {
         controlPress += 1;
-        display.style.color = "red";
+        display.style.color = "red";  
         body.style.backgroundColor = "lightsalmon";
       }  
         e.preventDefault();
     }
+
 });
 
-// Toggle timer ONLY on keyup (spacebar release)
 document.addEventListener('keyup', e => {  
   if (e.code === 'Space' || e.key === ' ') {
         if (!isRunning && controlPress > 15) {
             start();
         } else {
-            stop();                    
+            stop();
+               body.style.backgroundColor = "lightblue";                      
         }
-    }
-  else {
-    controlPress = 0;
-    body.style.backgroundColor = "white";
   }
-  if (isRunning) {
-    body.style.backgroundColor = "lightgreen";
+  else if (e.key == 'r') {
+    reset();
   }
-  else {
-    display.style.color = "#279bc2";
-    body.style.backgroundColor = "white";    
-  }
-
+  display.style.color = "#279bc2";
 });
