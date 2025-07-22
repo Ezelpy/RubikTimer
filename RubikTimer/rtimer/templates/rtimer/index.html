@@ -5,7 +5,7 @@
 <html lang="en">
     <head>
         <title>Timer</title>
-        <link href="{% static 'rtimer/styles.css' %}" rel="stylesheet">
+        <link href="{% static 'rtimer/styles.css' %}" rel="stylesheet" type="text/css">
     </head>
     <body id="body">
         <div class="titlebar">
@@ -14,11 +14,16 @@
         </div>
         <div class="center-wrapper" >
             <div class="container">
-                <h1 id="display" class="timer">00:00:00</h1>
+                <label class="timer">
+                    <span id="minutes" class="group">00</span><span id="minutesColon">:</span>
+                    <span id="seconds" class="group">00 </span><span id="secondsColon">.</span>
+                    <span id="milliseconds" class="group">00</span>
+                </label>
+                <!-- <label id="display" class="timer">0.00</label> -->
                 <div id="controls" class="controls">
-                    <button id="cmdStart" class="cmdStart" onclick="start()" onkeydown="start()">Start</button>
-                    <button id="cmdStop" class="cmdStop" onclick="stop()">Stop</button>
-                    <button id="cmdReset" class="cmdReset"  onclick="reset()">Reset</button>
+                    <button id="cmdStart" class="cmdStart" onclick="start()" onkeydown="start()"><image class="cmdStartIco" src="{% static 'rtimer/images/startbutton.png' %}"></image></button>
+                    <button id="cmdStop" class="cmdStop" onclick="stop()"><image class="cmdStopIco" src="{% static 'rtimer/images/stopbutton.png' %}"></image></button>
+                    <button id="cmdReset" class="cmdReset"  onclick="reset()"><image class="cmdStopIco" src="{% static 'rtimer/images/resetbutton.png' %}"></image></button>
                 </div>
             </div>   
         </div>
