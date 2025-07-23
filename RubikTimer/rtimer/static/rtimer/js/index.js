@@ -15,6 +15,7 @@ const controlsContainer = document.getElementById("controls");
 const scramble = document.getElementById("scramble");
 const body = document.getElementById("body");
 const timerDisplay = document.getElementById("timer");
+const titleBar = document.getElementById("titlebar");
 
 let timer = null;
 let startTime = 0;
@@ -25,6 +26,7 @@ let isRunning = false;
 function start() {
   controlPress = 0;
   controlsContainer.style.display = "none";
+  titleBar.style.display = "none";
   
   // Reset if the timer is not on zero
   if (elapsedTime != 0) {
@@ -49,6 +51,7 @@ function start() {
 async function stop() {
   if (isRunning) {
     controlsContainer.style.display = "flex";
+    titleBar.style.display = "flex";
     timerDisplay.style.color = PRIMARY_COLOR;
     body.style.backgroundColor = BACKGROUND_COLOR;  
     clearInterval(timer);
@@ -61,6 +64,7 @@ function reset() {
   // If its already running change back color and make controls visible
   if (isRunning) {
     controlsContainer.style.display = "flex";
+    titleBar.style.display = "flex";
     body.style.backgroundColor = BACKGROUND_COLOR;  
   }
 
