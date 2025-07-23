@@ -1,1 +1,21 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <link href="{% static 'rtimer/styles.css' %}" rel="stylesheet" type="text/css">
+    </head>
+    <body id="body">
+        <div class="titlebar">
+            <image class="rubik" src="{% static 'rtimer/images/rubikIcon.png' %}"></image>
+            <h1 class="heading">Rubiks Timer</h1> 
+        </div>
+        {% block body %}
+        {% endblock %}
         
+        <script src="{% static 'rtimer/js/index.js' %}"></script>
+    </body>
+</html>
+

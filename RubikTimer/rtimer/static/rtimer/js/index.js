@@ -1,13 +1,21 @@
+const TIMER_RESET = "00";
+const CONTROL_PRESS_MIN = 5;
+const PRIMARY_COLOR = "#279bc2";
+const START_COLOR = "lightgreen";
+const WAIT_COLOR = "lightsalmon";
+const STOP_COLOR = "red";
+const BACKGROUND_COLOR = "lightblue";
+
+const secColonDisplay = document.getElementById("secondsColon");
+const minColonDisplay = document.getElementById("minutesColon");
 const minDisplay = document.getElementById("minutes");
 const secDisplay = document.getElementById("seconds");
 const miliDisplay = document.getElementById("milliseconds");
-const secColonDisplay = document.getElementById("secondsColon");
-const minColonDisplay = document.getElementById("minutesColon");
 const controlsContainer = document.getElementById("controls");
-const startButton = document.getElementById("cmdStart");
-const stopButton = document.getElementById("cmdStop");
+const scramble = document.getElementById("scramble");
 const body = document.getElementById("body");
-const TIMER_RESET = "00";
+const timerDisplay = document.getElementById("timer");
+
 let timer = null;
 let startTime = 0;
 let elapsedTime = 0;
@@ -17,50 +25,55 @@ let isRunning = false;
 function start() {
   controlPress = 0;
   controlsContainer.style.display = "none";
+  
+  // Reset if the timer is not on zero
   if (elapsedTime != 0) {
     reset();
   } 
+
   if (!isRunning) {
-        body.style.backgroundColor = "lightgreen";
-        startTime = Date.now() - elapsedTime;
-        // We call the update function every ten miliseconds
-        timer = setInterval(() => {
-  elapsed = performance.now() - startTime;
-  update(elapsed);
-}, 10); 
-        isRunning = true;
-   } 
+    body.style.backgroundColor = START_COLOR; 
+    timerDisplay.style.color = START_COLOR;
+    startTime = Date.now() - elapsedTime;
+
+    // We call the update function every ten miliseconds
+    timer = setInterval(() => {
+      elapsed = performance.now() - startTime;
+      update(elapsed); 
+    }, 10); 
+
+    isRunning = true;
+  } 
 }
 
-function stop() {
-    if (isRunning) {
-        controlsContainer.style.display = "flex";
-        minDisplay.style.color = "#279bc2";
-        secDisplay.style.color = "#279bc2";
-        miliDisplay.style.color = "#279bc2";
-        minColonDisplay.style.color = "#279bc2";
-        secColonDisplay.style.color = "#279bc2";
-        body.style.backgroundColor = "lightblue";  
-        clearInterval(timer);
-        timer = null;
-        isRunning = false;
-    }
-}
-
-function reset() {
-    if (isRunning) {
-      body.style.backgroundColor = "lightblue";  
-    }
+async function stop() {
+  if (isRunning) {
+    controlsContainer.style.display = "flex";
+    timerDisplay.style.color = PRIMARY_COLOR;
+    body.style.backgroundColor = BACKGROUND_COLOR;  
     clearInterval(timer);
     timer = null;
     isRunning = false;
-    startTime = 0;
-    elapsedTime = 0;
-    controlPress = 0;
-    minDisplay.textContent = TIMER_RESET;
-    secDisplay.textContent = TIMER_RESET;
-    miliDisplay.textContent = TIMER_RESET;
-    startTime = Date.now();
+  }
+}
+
+function reset() {
+  // If its already running change back color and make controls visible
+  if (isRunning) {
+    controlsContainer.style.display = "flex";
+    body.style.backgroundColor = BACKGROUND_COLOR;  
+  }
+
+  clearInterval(timer);
+  timer = null;
+  isRunning = false;
+  startTime = 0;
+  elapsedTime = 0; 
+  controlPress = 0;
+  minDisplay.textContent = TIMER_RESET; 
+  secDisplay.textContent = TIMER_RESET; 
+  miliDisplay.textContent = TIMER_RESET;
+  startTime = Date.now();
 }
 
 function update() {
@@ -73,45 +86,47 @@ function update() {
   minDisplay.textContent = minutes;
   secDisplay.textContent = seconds; 
   miliDisplay.textContent = milliseconds;
-
-  
 }
 
 // BUG: counter is not getting reset so i can just press and instantly release
 // the counter many times so that it ends up starting when it gets to 5
 
+// Bug: timer gets out of container when resizing page
+
+// BUG: when the tab is on the start button, any button will start it not only
+// space
+
 document.addEventListener('keydown', e => { 
   if (e.code === 'Space' || e.key === ' ') {
-      if (!isRunning) {
-        controlPress += 1;
-        minDisplay.style.color = "red";  
-        secDisplay.style.color = "red";  
-        miliDisplay.style.color = "red"; 
-        minColonDisplay.style.color = "red";  
-        secColonDisplay.style.color = "red"; 
-        body.style.backgroundColor = "lightsalmon";
-      }  
-        e.preventDefault();
-    }
+    if (!isRunning) {
+      controlPress += 1;
+      timerDisplay.style.color = STOP_COLOR;
+      body.style.backgroundColor = WAIT_COLOR;
+    }  
+    e.preventDefault();
+  }
 });
 
 document.addEventListener('keyup', e => {  
+  // Handle Spacebar
   if (e.code === 'Space' || e.key === ' ') {
-        if (!isRunning && controlPress > 5) {
-            start();
-        } 
-        else {   
-            stop();
-            body.style.backgroundColor = "lightblue";                      
-        }
+    // Pass min time to avoid accidental space presses
+    if (!isRunning && controlPress > CONTROL_PRESS_MIN) {
+      start();
+    } 
+    else {   
+      stop();
+      body.style.backgroundColor = BACKGROUND_COLOR;                     
+    }
   }
+
+  // Handle R
   else if (e.key == 'r') {
     reset();
   }
 
-  minDisplay.style.color = "#279bc2";  
-  secDisplay.style.color = "#279bc2"; 
-  miliDisplay.style.color = "#279bc2"; 
-  secColonDisplay.style.color = "#279bc2"; 
-  minColonDisplay.style.color = "#279bc2"; 
+  // Reset the timer for keydowns that lasted less thatn control press
+  if (!isRunning) {
+    timerDisplay.style.color = PRIMARY_COLOR;
+  }
 });
