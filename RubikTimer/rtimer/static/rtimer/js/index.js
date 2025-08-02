@@ -12,7 +12,8 @@ const minDisplay = document.getElementById("minutes");
 const secDisplay = document.getElementById("seconds");
 const miliDisplay = document.getElementById("milliseconds");
 const controlsContainer = document.getElementById("controls");
-const scramble = document.getElementById("scramble");
+const scrambleDisplay = document.getElementById("scramble");
+const scrambleContainer = document.getElementById("scrambleContainer");
 const body = document.getElementById("body");
 const timerDisplay = document.getElementById("timer");
 const titleBar = document.getElementById("titlebar");
@@ -23,10 +24,16 @@ let elapsedTime = 0;
 let controlPress = 0;
 let isRunning = false;
 
+document.addEventListener('DOMContentLoaded', () => {
+  getNewScramble();
+});
+
 function start() {
   controlPress = 0;
   controlsContainer.style.display = "none";
   titleBar.style.display = "none";
+  scrambleContainer.style.display = "none";
+  scrambleDisplay
   
   // Reset if the timer is not on zero
   if (elapsedTime != 0) {
@@ -52,11 +59,14 @@ async function stop() {
   if (isRunning) {
     controlsContainer.style.display = "flex";
     titleBar.style.display = "flex";
+    scrambleContainer.style.display = "flex";
+
     timerDisplay.style.color = PRIMARY_COLOR;
     body.style.backgroundColor = BACKGROUND_COLOR;  
     clearInterval(timer);
     timer = null;
     isRunning = false;
+    getNewScramble();
   }
 }
 
@@ -65,6 +75,7 @@ function reset() {
   if (isRunning) {
     controlsContainer.style.display = "flex";
     titleBar.style.display = "flex";
+    scrambleContainer.style.display = "flex";
     body.style.backgroundColor = BACKGROUND_COLOR;  
   }
 
@@ -78,6 +89,7 @@ function reset() {
   secDisplay.textContent = TIMER_RESET; 
   miliDisplay.textContent = TIMER_RESET;
   startTime = Date.now();
+  getNewScramble();
 }
 
 function update() {
@@ -134,3 +146,10 @@ document.addEventListener('keyup', e => {
     timerDisplay.style.color = PRIMARY_COLOR;
   }
 });
+
+function getNewScramble() {
+  const scrambler = new Scrambow();
+  const newScramble = scrambler.get()[0]["scramble_string"];
+  
+  scrambleDisplay.textContent = newScramble;
+}
