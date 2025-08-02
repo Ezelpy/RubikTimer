@@ -25,26 +25,30 @@ body {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 10px 0 rgba(0, 0, 0, 0.19);
 }
 
-.scramble {
-    background-color: grey; 
+.scrambleContainer {
+    background-color: #4db4d6; 
     height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
     vertical-align: middle;
-    margin: 10px;
+    margin: 0;
     padding: 0;
-    border-radius: 15px;
     box-sizing: border-box;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.09), 0 3px 8px 0 rgba(0, 0, 0, 0.091);
 }
 
-.scramble label {
+.scrambleContainer label {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     color: white;
     font-size: 40px;
     text-align: center;
+    display: block;
 }
 
+.scrambleContainer:hover {
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 4px 10px 0 rgba(0, 0, 0, 0.12);
+}
 
 .timer {
   display: inline-grid;
@@ -61,24 +65,36 @@ body {
 
 .timer span { text-align: center; }
 
-.container {
+.displayContainer {
+    margin: 0;
+    display: flex;
+    vertical-align: middle;
+    justify-content: center;
+    height: 100%;
+}
+
+.display {
     display: flex;
     flex-direction: column; 
     justify-content: center;  
-    align-items: center;      
+    align-items: center;
+    top: 50%;
+    position: relative;
+    transform: translateY(20%); 
+    height: 100%;      
     background-color: white;
     width: 50%;
     height: 400px;
     border-radius: 25px;
     border-style: none;
-    margin: 0 auto;
+    margin: 0;
     gap: 2rem;
     border-width: 0.5px;
     border-color: white;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
 }
 
-.container:hover {
+.display:hover {
    box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
    border-style: solid;
 }
@@ -96,7 +112,7 @@ body {
     width: 70px;
     margin-right: 1rem;
     border-style: none;
-    background-color: lightgreen;
+    background-color: #5ad660;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: large;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 2px 3px 0 rgba(0, 0, 0, 0.19);
@@ -122,7 +138,7 @@ body {
     width: 70px;
     margin-right: 1rem;
     border-style: none;
-    background-color: lightsalmon;
+    background-color: #de6231;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: large;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 2px 3px 0 rgba(0, 0, 0, 0.19);
@@ -133,22 +149,22 @@ body {
     height: 70px;
     width: 70px;
     border-style: none;
-    background-color: lightblue;
+    background-color: #4db4d6;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: large;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 2px 3px 0 rgba(0, 0, 0, 0.19);
 }
 
 .cmdStart:hover {
-    background-color: #77e677;
+    background-color: #37d43f;
 }
 
 .cmdStop:hover {
-    background-color: #fa8b5f;
+    background-color: #db4102;
 }
 
 .cmdReset:hover {
-    background-color: #8bcbe0;
+    background-color: #3daed4;
 }
 
 .center-wrapper {

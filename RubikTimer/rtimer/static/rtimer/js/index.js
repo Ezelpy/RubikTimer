@@ -13,6 +13,7 @@ const secDisplay = document.getElementById("seconds");
 const miliDisplay = document.getElementById("milliseconds");
 const controlsContainer = document.getElementById("controls");
 const scrambleDisplay = document.getElementById("scramble");
+const displayTimer = document.getElementById("display");
 const scrambleContainer = document.getElementById("scrambleContainer");
 const body = document.getElementById("body");
 const timerDisplay = document.getElementById("timer");
@@ -33,7 +34,6 @@ function start() {
   controlsContainer.style.display = "none";
   titleBar.style.display = "none";
   scrambleContainer.style.display = "none";
-  scrambleDisplay
   
   // Reset if the timer is not on zero
   if (elapsedTime != 0) {
@@ -43,6 +43,7 @@ function start() {
   if (!isRunning) {
     body.style.backgroundColor = START_COLOR; 
     timerDisplay.style.color = START_COLOR;
+    displayTimer.style.transform = 'translateY(40%)';
     startTime = Date.now() - elapsedTime;
 
     // We call the update function every ten miliseconds
@@ -60,6 +61,7 @@ async function stop() {
     controlsContainer.style.display = "flex";
     titleBar.style.display = "flex";
     scrambleContainer.style.display = "flex";
+    displayTimer.style.transform = 'translateY(20%)';
 
     timerDisplay.style.color = PRIMARY_COLOR;
     body.style.backgroundColor = BACKGROUND_COLOR;  
@@ -76,6 +78,7 @@ function reset() {
     controlsContainer.style.display = "flex";
     titleBar.style.display = "flex";
     scrambleContainer.style.display = "flex";
+    displayTimer.style.transform = 'translateY(20%)';
     body.style.backgroundColor = BACKGROUND_COLOR;  
   }
 
@@ -151,5 +154,17 @@ function getNewScramble() {
   const scrambler = new Scrambow();
   const newScramble = scrambler.get()[0]["scramble_string"];
   
-  scrambleDisplay.textContent = newScramble;
+  scrambleDisplay.textContent = newScramble;  
 }
+
+// PILE OF BUGS
+// In need of improvement for smaller displays bc of timer and scrable label
+// Timer display needs to be centered vertically
+// Timer will start if I use tab two times as just keydown
+// Timer will start if I just press the button for 5 times, need to reset counter
+
+// PILE OF NEW FUNCS
+// 1 - Log in functionality
+// 2 - Solve time and scramble save and sidebar display.
+//   - This will allow us to be able to delete solves as well.
+// 3 - Display averages, best times, current average.
