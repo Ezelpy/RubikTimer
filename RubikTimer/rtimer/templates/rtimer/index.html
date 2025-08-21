@@ -5,20 +5,59 @@
 
 {% block body %} 
 <div id="scrambleContainer" class="scrambleContainer">
-    <label id="scramble"></label>
-</div>
-<div class="displayContainer">
-    <div id="display" class="display">
-        <label id="timer" class="timer">
-            <span id="minutes" class="group">00</span><span id="minutesColon">:</span>
-            <span id="seconds" class="group">00 </span><span id="secondsColon">.</span>
-            <span id="milliseconds" class="group">00</span>
-        </label>
-        <div id="controls" class="controls">
-            <button id="cmdStart" class="cmdStart" onclick="start()" onkeydown="start()"><image class="cmdStartIco" src="{% static 'rtimer/images/startbutton.png' %}"></image></button>
-            <button id="cmdStop" class="cmdStop" onclick="stop()"><image class="cmdStopIco" src="{% static 'rtimer/images/stopbutton.png' %}"></image></button>
-            <button id="cmdReset" class="cmdReset"  onclick="reset()"><image class="cmdStopIco" src="{% static 'rtimer/images/resetbutton.png' %}"></image></button>
+            <label id="scramble"></label>
+            <button class="login-btn">
+                <image src="{% static 'rtimer/images/usericon.png' %}" onclick="login()"></image>
+            </button>
+            
         </div>
-    </div>   
-</div>
+        <nav id="sideBar" class="sideBar">
+            <div id="titlebar" class="titlebar">
+                <image class="rubik" src="{% static 'rtimer/images/rubikIcon.png' %}"></image>
+                <h1 class="heading">Rubiks Timer</h1> 
+            </div>
+            <div class="solve-table-container">
+                <table class="solve-table">
+                    <thead>
+                        <tr>
+                            <th>N°</th>
+                            <th>Solve</th>
+                            <th>Ao5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for solve in solves%}
+                        <tr>
+                            <td>{{ solve.id }}</td>
+                            <td>{{ solve.time }}</td>
+                            <td>{{ solve.averageFive }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table> 
+            </div>
+           {% if user.is_authenticated %}
+            <form class="logout-btn" action="{% url 'logout' %}" method="POST">
+                {% csrf_token %}
+                <button class="logout-btn" type="submit">
+                    <img src="{% static 'rtimer/images/logouticon.png' %}" alt="Logout">
+                </button>
+            </form>
+            {% endif %}
+            
+        </nav>
+    <div class="displayContainer">
+        <div id="display" class="display">
+            <label id="timer" class="timer">
+                <span id="minutes" class="group">00</span><span id="minutesColon">:</span>
+                <span id="seconds" class="group">00 </span><span id="secondsColon">.</span>
+                <span id="milliseconds" class="group">00</span>
+            </label>
+            <div id="controls" class="controls">
+                <button id="cmdStart" class="cmdStart" onclick="start()" onkeydown="start()"><image class="cmdStartIco" src="{% static 'rtimer/images/startbutton.png' %}"></image></button>
+                <button id="cmdStop" class="cmdStop" onclick="stop()"><image class="cmdStopIco" src="{% static 'rtimer/images/stopbutton.png' %}"></image></button>
+                <button id="cmdReset" class="cmdReset"  onclick="reset()"><image class="cmdStopIco" src="{% static 'rtimer/images/resetbutton.png' %}"></image></button>
+            </div>
+        </div>   
+    </div>
 {% endblock %}

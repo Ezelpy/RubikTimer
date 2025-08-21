@@ -14,6 +14,7 @@ const miliDisplay = document.getElementById("milliseconds");
 const controlsContainer = document.getElementById("controls");
 const scrambleDisplay = document.getElementById("scramble");
 const displayTimer = document.getElementById("display");
+const sidebar = document.getElementById("sideBar");
 const scrambleContainer = document.getElementById("scrambleContainer");
 const body = document.getElementById("body");
 const timerDisplay = document.getElementById("timer");
@@ -25,6 +26,8 @@ let elapsedTime = 0;
 let controlPress = 0;
 let isRunning = false;
 
+let currScramble = null;
+
 document.addEventListener('DOMContentLoaded', () => {
   getNewScramble();
 });
@@ -34,6 +37,7 @@ function start() {
   controlsContainer.style.display = "none";
   titleBar.style.display = "none";
   scrambleContainer.style.display = "none";
+  sidebar.style.display = "none";
   
   // Reset if the timer is not on zero
   if (elapsedTime != 0) {
@@ -43,7 +47,6 @@ function start() {
   if (!isRunning) {
     body.style.backgroundColor = START_COLOR; 
     timerDisplay.style.color = START_COLOR;
-    displayTimer.style.transform = 'translateY(40%)';
     startTime = Date.now() - elapsedTime;
 
     // We call the update function every ten miliseconds
@@ -61,13 +64,16 @@ async function stop() {
     controlsContainer.style.display = "flex";
     titleBar.style.display = "flex";
     scrambleContainer.style.display = "flex";
-    displayTimer.style.transform = 'translateY(20%)';
+    sidebar.style.display = "initial";
 
     timerDisplay.style.color = PRIMARY_COLOR;
     body.style.backgroundColor = BACKGROUND_COLOR;  
     clearInterval(timer);
     timer = null;
     isRunning = false;
+    
+    
+    
     getNewScramble();
   }
 }
@@ -78,7 +84,7 @@ function reset() {
     controlsContainer.style.display = "flex";
     titleBar.style.display = "flex";
     scrambleContainer.style.display = "flex";
-    displayTimer.style.transform = 'translateY(20%)';
+    sidebar.style.display = "initial";
     body.style.backgroundColor = BACKGROUND_COLOR;  
   }
 
@@ -105,6 +111,10 @@ function update() {
   minDisplay.textContent = minutes;
   secDisplay.textContent = seconds; 
   miliDisplay.textContent = milliseconds;
+}
+
+function login() {
+  window.location.href = "login";
 }
 
 // BUG: counter is not getting reset so i can just press and instantly release
@@ -152,9 +162,9 @@ document.addEventListener('keyup', e => {
 
 function getNewScramble() {
   const scrambler = new Scrambow();
-  const newScramble = scrambler.get()[0]["scramble_string"];
+  currScramble = scrambler.get()[0]["scramble_string"];
   
-  scrambleDisplay.textContent = newScramble;  
+  scrambleDisplay.textContent = currScramble;  
 }
 
 // PILE OF BUGS
