@@ -23,6 +23,7 @@ const titleBar = document.getElementById("titlebar");
 let timer = null;
 let startTime = 0;
 let elapsedTime = 0;
+let display = "";
 let controlPress = 0;
 let isRunning = false;
 
@@ -68,6 +69,13 @@ async function stop() {
 
     timerDisplay.style.color = PRIMARY_COLOR;
     body.style.backgroundColor = BACKGROUND_COLOR;  
+    
+    document.getElementById("timeForm").value = display;
+    document.getElementById("scrambleForm").value = currScramble;
+    document.getElementById("avgForm").value = 20.0;
+
+    document.getElementById("solveForm").submit();
+    
     clearInterval(timer);
     timer = null;
     isRunning = false;
@@ -94,6 +102,7 @@ function reset() {
   startTime = 0;
   elapsedTime = 0; 
   controlPress = 0;
+  display = "";
   minDisplay.textContent = TIMER_RESET; 
   secDisplay.textContent = TIMER_RESET; 
   miliDisplay.textContent = TIMER_RESET;
@@ -104,13 +113,21 @@ function reset() {
 function update() {
   elapsedTime = Date.now() - startTime;
 
-  const minutes = String(Math.floor(elapsedTime / 60000)).padStart(2, "0");
-  const seconds = String(Math.floor((elapsedTime % 60000) / 1000)).padStart(2, "0");
-  const milliseconds = String(Math.floor((elapsedTime % 1000) / 10)).padStart(2, "0");
+  minutes = String(Math.floor(elapsedTime / 60000));
+  seconds = String(Math.floor((elapsedTime % 60000) / 1000));
+  milliseconds = String(Math.floor((elapsedTime % 1000) / 10));
 
-  minDisplay.textContent = minutes;
-  secDisplay.textContent = seconds; 
-  miliDisplay.textContent = milliseconds;
+  minDisplay.textContent = minutes.padStart(2, "0");
+  secDisplay.textContent = seconds.padStart(2, "0"); 
+  miliDisplay.textContent = milliseconds.padStart(2, "0");
+
+  if (minutes < 1) {
+    display = seconds + "." + milliseconds;
+  }
+
+  else {
+    display = minutes + ":" + seconds + "." + milliseconds;
+  }
 }
 
 function login() {

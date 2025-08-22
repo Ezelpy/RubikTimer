@@ -4,13 +4,13 @@
 {% block title %}RubiksTimer{% endblock %}
 
 {% block body %} 
-<div id="scrambleContainer" class="scrambleContainer">
+        <div id="scrambleContainer" class="scrambleContainer">
             <label id="scramble"></label>
             <button class="login-btn">
                 <image src="{% static 'rtimer/images/usericon.png' %}" onclick="login()"></image>
-            </button>
-            
+            </button>    
         </div>
+
         <nav id="sideBar" class="sideBar">
             <div id="titlebar" class="titlebar">
                 <image class="rubik" src="{% static 'rtimer/images/rubikIcon.png' %}"></image>
@@ -26,9 +26,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for solve in solves%}
+                    {% for solve in solves %}
                         <tr>
-                            <td>{{ solve.id }}</td>
+                            <td>{{ forloop.revcounter }}</td>
                             <td>{{ solve.time }}</td>
                             <td>{{ solve.averageFive }}</td>
                         </tr>
@@ -55,7 +55,13 @@
             </label>
             <div id="controls" class="controls">
                 <button id="cmdStart" class="cmdStart" onclick="start()" onkeydown="start()"><image class="cmdStartIco" src="{% static 'rtimer/images/startbutton.png' %}"></image></button>
-                <button id="cmdStop" class="cmdStop" onclick="stop()"><image class="cmdStopIco" src="{% static 'rtimer/images/stopbutton.png' %}"></image></button>
+                <form id="solveForm" action="{% url 'index' %}" method="POST">
+                    {% csrf_token %}     
+                    <input id="timeForm" type="hidden" name="time">
+                    <input id="scrambleForm" type="hidden" name="scramble">
+                    <input id="avgForm" type="hidden" name="avgFive">          
+                    <button id="cmdStop" class="cmdStop" onclick="stop()"><image class="cmdStopIco" src="{% static 'rtimer/images/stopbutton.png' %}"></image></button>    
+                </form>
                 <button id="cmdReset" class="cmdReset"  onclick="reset()"><image class="cmdStopIco" src="{% static 'rtimer/images/resetbutton.png' %}"></image></button>
             </div>
         </div>   

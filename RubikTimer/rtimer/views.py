@@ -11,10 +11,21 @@ from django.conf import settings
 
 def index(request):
         if request.user.is_authenticated:
-                solves = request.user.solves.order_by("-id")
-                return render(request, "rtimer/index.html", {
-                        "solves": solves,
-                })
+            if request.method == "POST":
+                Solve.objects.create(
+                    user=request.user,
+                    time=request.POST["time"],
+                    scramble=request.POST["scramble"],
+                    averageFive=20.0
+                )
+                return HttpResponseRedirect(reverse("index"))
+
+            solves = request.user.solves.order_by("-id")
+            firstId = solves.first().id
+            return render(request, "rtimer/index.html", {
+                    "solves": solves,
+                    "firstId": firstId
+            })
         else:
             return render(request, "rtimer/index.html") 
 

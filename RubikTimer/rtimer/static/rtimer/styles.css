@@ -78,7 +78,17 @@ body {
 }
 
 .solve-table-container {
-    height: 75vh;
+  height: 75vh;
+  overflow-y: scroll;  
+  overflow-x: hidden;   
+}
+
+.solve-table-container::-webkit-scrollbar {
+  display: none;
+}
+
+.solve-table-container {
+  scrollbar-width: none;   
 }
 
 .solve-table thead tr {
