@@ -5,31 +5,45 @@
 
 {% block body %} 
     <div id="titlebar" class="titlebar">
+        <form action="{% url 'index' %}" method="POST">
+            {% csrf_token %}
+            <button>
+                <div class="title-bar-btn">
                     <image class="rubik" src="{% static 'rtimer/images/rubikIcon.png' %}"></image>
-                    <h1 class="heading">Rubiks Timer</h1> 
+                    <h1 class="heading">Rubiks Timer</h1>    
+                </div>
+            </button>  
+        </form>
+              
+    </div> 
+
+    <div class="register-display">
+            <div class="login-form">
+                <h2>Register</h2>
+                {% if message %}
+                    <div>{{ message }}</div>
+                {% endif %}
+
+                <form action="{% url 'register' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="email" name="email" placeholder="Email Address">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="password" name="password" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="Register">
+                </form>
+                <div>
+                    <label>Already have an account?</label>  <a href="{% url 'login' %}">Log In here.</a>     
+                </div>
+                   
+            </div>
     </div>
-    <h2>Register</h2>
-
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
-
-    <form action="{% url 'register' %}" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <input class="form-control" autofocus type="text" name="username" placeholder="Username">
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="email" name="email" placeholder="Email Address">
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
-        </div>
-        <input class="btn btn-primary" type="submit" value="Register">
-    </form>
-
-    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
 {% endblock %}
