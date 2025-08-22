@@ -11,4 +11,4 @@ class Solve(models.Model):
     )
     time = models.FloatField()
     scramble = models.CharField(max_length=64)
-    averageFive = models.FloatField()
+    averageFive = models.CharField(max_length=64)

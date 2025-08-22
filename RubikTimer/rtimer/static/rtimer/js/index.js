@@ -5,6 +5,7 @@ const START_COLOR = "lightgreen";
 const WAIT_COLOR = "lightsalmon";
 const STOP_COLOR = "red";
 const BACKGROUND_COLOR = "lightblue";
+const STORAGE_KEY = "rtimer:lastFiveSolves"; // new for Ao5 persistence
 
 const secColonDisplay = document.getElementById("secondsColon");
 const minColonDisplay = document.getElementById("minutesColon");
@@ -22,14 +23,21 @@ const titleBar = document.getElementById("titlebar");
 
 let timer = null;
 let startTime = 0;
-let elapsedTime = 0;
+let elapsedTimeMs = 0;
 let display = "";
 let controlPress = 0;
 let isRunning = false;
-
+let lastFiveSolves = [];
 let currScramble = null;
 
 document.addEventListener('DOMContentLoaded', () => {
+  // load saved Ao5 data if available
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    if (Array.isArray(saved)) lastFiveSolves = saved;
+  } catch (_) {
+    lastFiveSolves = [];
+  }
   getNewScramble();
 });
 
@@ -41,19 +49,18 @@ function start() {
   sidebar.style.display = "none";
   
   // Reset if the timer is not on zero
-  if (elapsedTime != 0) {
+  if (elapsedTimeMs != 0) {
     reset();
   } 
 
   if (!isRunning) {
     body.style.backgroundColor = START_COLOR; 
     timerDisplay.style.color = START_COLOR;
-    startTime = Date.now() - elapsedTime;
+    startTime = performance.now() - elapsedTimeMs;
 
     // We call the update function every ten miliseconds
     timer = setInterval(() => {
-      elapsed = performance.now() - startTime;
-      update(elapsed); 
+      update(); 
     }, 10); 
 
     isRunning = true;
@@ -62,25 +69,36 @@ function start() {
 
 async function stop() {
   if (isRunning) {
+    console.log("index.js loaded v4")
+    clearInterval(timer);
+    timer = null;
+    isRunning = false;
+    elapsedTimeMs = Math.floor(performance.now() - startTime);
+
     controlsContainer.style.display = "flex";
     titleBar.style.display = "flex";
     scrambleContainer.style.display = "flex";
     sidebar.style.display = "initial";
 
     timerDisplay.style.color = PRIMARY_COLOR;
-    body.style.backgroundColor = BACKGROUND_COLOR;  
-    
+    body.style.backgroundColor = BACKGROUND_COLOR;
+
+    lastFiveSolves.push(elapsedTimeMs);
+    if (lastFiveSolves.length > 5) lastFiveSolves.shift();
+
+    // save solves so Ao5 works after reload
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(lastFiveSolves));
+    } catch (_) {}
+
+    const ao5ms = calculateAo5Ms(lastFiveSolves);
+    const ao5str = (ao5ms === null) ? "-" : (ao5ms / 1000).toFixed(2);
+
     document.getElementById("timeForm").value = display;
     document.getElementById("scrambleForm").value = currScramble;
-    document.getElementById("avgForm").value = 20.0;
+    document.getElementById("avgForm").value = ao5str;
 
     document.getElementById("solveForm").submit();
-    
-    clearInterval(timer);
-    timer = null;
-    isRunning = false;
-    
-    
     
     getNewScramble();
   }
@@ -96,55 +114,42 @@ function reset() {
     body.style.backgroundColor = BACKGROUND_COLOR;  
   }
 
+  // Reset display and all the variables and get new scramble to display
   clearInterval(timer);
   timer = null;
   isRunning = false;
   startTime = 0;
-  elapsedTime = 0; 
+  elapsedTimeMs = 0; 
   controlPress = 0;
   display = "";
   minDisplay.textContent = TIMER_RESET; 
   secDisplay.textContent = TIMER_RESET; 
   miliDisplay.textContent = TIMER_RESET;
-  startTime = Date.now();
   getNewScramble();
 }
 
-function update() {
-  elapsedTime = Date.now() - startTime;
+function update() {        
+  elapsedTimeMs = Math.floor(performance.now() - startTime);
 
-  minutes = String(Math.floor(elapsedTime / 60000));
-  seconds = String(Math.floor((elapsedTime % 60000) / 1000));
-  milliseconds = String(Math.floor((elapsedTime % 1000) / 10));
+  const minutes = String(Math.floor(elapsedTimeMs / 60000));
+  const seconds = String(Math.floor((elapsedTimeMs % 60000) / 1000));
+  const milliseconds = String(Math.floor((elapsedTimeMs % 1000) / 10));
 
   minDisplay.textContent = minutes.padStart(2, "0");
   secDisplay.textContent = seconds.padStart(2, "0"); 
   miliDisplay.textContent = milliseconds.padStart(2, "0");
-
-  if (minutes < 1) {
-    display = seconds + "." + milliseconds;
-  }
-
-  else {
-    display = minutes + ":" + seconds + "." + milliseconds;
-  }
+  display = msToDisplay(elapsedTimeMs);
 }
 
 function login() {
   window.location.href = "login";
 }
 
-// BUG: counter is not getting reset so i can just press and instantly release
-// the counter many times so that it ends up starting when it gets to 5
-
-// Bug: timer gets out of container when resizing page
-
-// BUG: when the tab is on the start button, any button will start it not only
-// space
-
 document.addEventListener('keydown', e => { 
+  // Key listener for space keydown so that the display can be on waiting mode
   if (e.code === 'Space' || e.key === ' ') {
     if (!isRunning) {
+      // Counting number of presses to account for missclicks
       controlPress += 1;
       timerDisplay.style.color = STOP_COLOR;
       body.style.backgroundColor = WAIT_COLOR;
@@ -154,7 +159,7 @@ document.addEventListener('keydown', e => {
 });
 
 document.addEventListener('keyup', e => {  
-  // Handle Spacebar
+  // Handle Spacebar kewup to start or stop the timer
   if (e.code === 'Space' || e.key === ' ') {
     // Pass min time to avoid accidental space presses
     if (!isRunning && controlPress > CONTROL_PRESS_MIN) {
@@ -178,9 +183,9 @@ document.addEventListener('keyup', e => {
 });
 
 function getNewScramble() {
+  // Get new scramble displayed in the top
   const scrambler = new Scrambow();
   currScramble = scrambler.get()[0]["scramble_string"];
-  
   scrambleDisplay.textContent = currScramble;  
 }
 
@@ -195,3 +200,23 @@ function getNewScramble() {
 // 2 - Solve time and scramble save and sidebar display.
 //   - This will allow us to be able to delete solves as well.
 // 3 - Display averages, best times, current average.
+
+// Convert miliseconds to string to display
+function msToDisplay(ms) {
+  const m = Math.floor(ms / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  const cs = Math.floor((ms % 1000) / 10);
+  if (m < 1) 
+    return `${String(s).padStart(2,"0")}.${String(cs).padStart(2,"0")}`;
+  return `${m}:${String(s).padStart(2,"0")}.${String(cs).padStart(2,"0")}`;
+}
+
+// compute Ao5 (ms) from an array of ms times
+function calculateAo5Ms(lastFive) {
+  if (lastFive.length < 5) return null;
+  const last5 = lastFive.slice(-5).slice();        
+  last5.sort((a,b) => a - b);
+  const middle3 = last5.slice(1, 4);
+  const sum = middle3.reduce((acc, t) => acc + t, 0);
+  return Math.round(sum / 3);
+}

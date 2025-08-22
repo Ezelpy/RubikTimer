@@ -12,11 +12,12 @@ from django.conf import settings
 def index(request):
         if request.user.is_authenticated:
             if request.method == "POST":
+
                 Solve.objects.create(
                     user=request.user,
                     time=request.POST["time"],
                     scramble=request.POST["scramble"],
-                    averageFive=20.0
+                    averageFive=request.POST["avgFive"]
                 )
                 return HttpResponseRedirect(reverse("index"))
 
