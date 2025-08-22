@@ -5,7 +5,7 @@
 
 {% block body %} 
     <div id="titlebar" class="titlebar">
-        <form action="{% url 'index' %}" method="POST">
+        <form action="{% url 'index' %}" method="GET">
             {% csrf_token %}
             <button>
                 <div class="title-bar-btn">

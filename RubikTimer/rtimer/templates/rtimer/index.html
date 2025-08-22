@@ -55,13 +55,17 @@
             </label>
             <div id="controls" class="controls">
                 <button id="cmdStart" class="cmdStart" onclick="start()" onkeydown="start()"><image class="cmdStartIco" src="{% static 'rtimer/images/startbutton.png' %}"></image></button>
-                <form id="solveForm" action="{% url 'index' %}" method="POST">
-                    {% csrf_token %}     
-                    <input id="timeForm" type="hidden" name="time">
-                    <input id="scrambleForm" type="hidden" name="scramble">
-                    <input id="avgForm" type="hidden" name="avgFive">          
-                    <button id="cmdStop" class="cmdStop" onclick="stop()"><image class="cmdStopIco" src="{% static 'rtimer/images/stopbutton.png' %}"></image></button>    
-                </form>
+                {% if user.is_authenticated %}
+                    <form id="solveForm" action="{% url 'index' %}" method="POST">
+                        {% csrf_token %}     
+                        <input id="timeForm" type="hidden" name="time">
+                        <input id="scrambleForm" type="hidden" name="scramble">
+                        <input id="avgForm" type="hidden" name="avgFive">          
+                        <button id="cmdStop" class="cmdStop" onclick="stop()"><image class="cmdStopIco" src="{% static 'rtimer/images/stopbutton.png' %}"></image></button>    
+                    </form>
+                {% else %}
+                    <button id="cmdStop" class="cmdStop" onclick="stop()"><image class="cmdStopIco" src="{% static 'rtimer/images/stopbutton.png' %}"></image></button>  
+                {% endif %}
                 <button id="cmdReset" class="cmdReset"  onclick="reset()"><image class="cmdStopIco" src="{% static 'rtimer/images/resetbutton.png' %}"></image></button>
             </div>
         </div>   
