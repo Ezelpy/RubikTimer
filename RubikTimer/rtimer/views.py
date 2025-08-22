@@ -21,7 +21,9 @@ def index(request):
                 return HttpResponseRedirect(reverse("index"))
 
             solves = request.user.solves.order_by("-id")
-            firstId = solves.first().id
+            firstId = None
+            if solves:
+                firstId = solves.first().id
             return render(request, "rtimer/index.html", {
                     "solves": solves,
                     "firstId": firstId

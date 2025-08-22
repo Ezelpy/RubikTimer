@@ -18,7 +18,7 @@ body {
 
 .titlebar {
     background-color: #279bc2; 
-    height: 60px;
+    height: 7vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -43,6 +43,10 @@ body {
     cursor: pointer;  
 }
 
+.titlebar h1 {
+    font-size: 3vh;
+}
+
 .titlebar button div {
     display: flex;
     justify-content: center;
@@ -52,6 +56,7 @@ body {
 .titlebar img {
     margin: 0;
     margin-right: 10px;
+    height: 5vh;
 }
 
 .sideBar {
@@ -177,7 +182,7 @@ body {
   font-family: 'digital-7', monospace;
   font-feature-settings: 'tnum';
   font-variant-numeric: tabular-nums;
-  font-size: 14vh;
+  font-size: 8vw;
   line-height: 1;
   color: #279bc2;
 }
