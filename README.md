@@ -1,5 +1,5 @@
 <h1>RubikTimer</h1>
-A demo web application I made of a speedcubing timer, a passion of mine. Main project while studying CS50W.
+A responsive demo web application I made of a speedcubing timer, a passion of mine. Main project while studying CS50W.
 
 <h2>Description</h2>
 This web app uses Python, Django, SQLite, JS, HTML, CSS, and an external library for the scramble. 
