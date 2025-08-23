@@ -1,9 +1,9 @@
 <h1>RubikTimer</h1>
-A demo web application I made of a speedcubing timer, a passion of mine.
+A demo web application I made of a speedcubing timer, a passion of mine. Main project while studying CS50W.
 
 <h2>Description</h2>
 This web app uses Python, Django, SQLite, JS, HTML, CSS, and an external library for the scramble. 
-It allows the user to register, log in, save solves, see averages, time solves, get scrambles for 3x3, have a history of solve times, etc.
+It allows the user to register, log in, save solves, see averages, time solves, get official scrambles for 3x3, have a history of solve times, etc.
 
 <h2>Overview</h2>
 
