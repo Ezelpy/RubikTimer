@@ -7,8 +7,6 @@ RUN useradd -m appuser
 
 WORKDIR /app
 
-RUN apt-get install -y curl 
-
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 COPY RubikTimer/requirements.txt .
