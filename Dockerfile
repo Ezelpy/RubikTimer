@@ -14,4 +14,4 @@ USER appuser
 
 EXPOSE 8000
 
-CMD ["guicorn", "--bind", "0.0.0.0:8000", "RubikTimer.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2", "RubikTimer.wsgi:application"]
