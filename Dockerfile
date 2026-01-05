@@ -4,15 +4,13 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 PYTHONBUFFERED=1
 
 RUN useradd -m appuser
-
 WORKDIR /app
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
-
 COPY RubikTimer/requirements.txt .
-RUN uv pip install -r requirements.txt --system
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY RubikTimer/ .
+USER appuser
 
 EXPOSE 8000
 
