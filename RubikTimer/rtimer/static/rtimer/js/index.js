@@ -30,6 +30,7 @@ let isRunning = false;
 let lastFiveSolves = [];
 let currScramble = null;
 
+// DOESNT WORK WHEN OPENING BROWSER AGAIN
 document.addEventListener('DOMContentLoaded', () => {
   // load saved Ao5 data if available
   try {
