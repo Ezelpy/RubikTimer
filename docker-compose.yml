@@ -13,6 +13,8 @@ services:
       - internal
     ports:
       - 8000:8000
+    volumes:
+      - staticfiles:/app/staticfiles
 
   db:
     image: postgres:16
@@ -38,3 +40,4 @@ networks:
 
 volumes:
   pgdata:
+  staticfiles:
